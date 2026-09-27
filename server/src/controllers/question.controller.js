@@ -14,6 +14,7 @@ async function createQuestion(req, res) {
             answerType,
             points,
             questionOrder,
+            fileId,
             answers
         } = req.body;
 
@@ -38,6 +39,7 @@ async function createQuestion(req, res) {
                 answerType,
                 points,
                 questionOrder,
+                fileId,
                 answers
             );
 
@@ -123,6 +125,7 @@ async function updateQuestion(req, res) {
             answerType,
             points,
             questionOrder,
+            fileId,
             answers
         } = req.body;
 
@@ -160,6 +163,7 @@ async function updateQuestion(req, res) {
                 answerType,
                 points,
                 questionOrder,
+                fileId,
                 answers
             );
 

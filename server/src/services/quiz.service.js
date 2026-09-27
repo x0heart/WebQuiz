@@ -115,18 +115,21 @@ async function getQuizById(quizId, organizerId) {
     const questionsResult = await pool.query(
         `
         SELECT
-            id,
-            question_text,
-            question_type,
-            answer_type,
-            points,
-            question_order
-
-        FROM questions
-
-        WHERE quiz_id = $1
-
-        ORDER BY question_order
+            q.id,
+            q.question_text,
+            q.question_type,
+            q.answer_type,
+            q.points,
+            q.question_order,
+            q.file_id,
+            f.original_name,
+            f.stored_name,
+            f.mime_type
+        FROM questions q
+        LEFT JOIN files f
+            ON f.id = q.file_id
+        WHERE q.quiz_id = $1
+        ORDER BY q.question_order  
         `,
         [quizId]
     );
@@ -151,6 +154,22 @@ async function getQuizById(quizId, organizerId) {
             `,
             [question.id]
         );
+
+        if (question.file_id) {
+            question.file = {
+                id: question.file_id,
+                originalName: question.original_name,
+                storedName: question.stored_name,
+                mimeType: question.mime_type,
+                url: `/uploads/${question.stored_name}`
+            };
+        } else {
+            question.file = null;
+        }
+
+        delete question.original_name;
+        delete question.stored_name;
+        delete question.mime_type;
 
         question.answers = answersResult.rows;
     }

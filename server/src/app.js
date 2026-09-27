@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+
+
 require("dotenv").config();
 
 const authRoutes =
@@ -12,6 +15,8 @@ const questionRoutes =
     require("./routes/question.routes");
 const categoryRoutes =
     require("./routes/category.routes");
+const fileRoutes =
+    require("./routes/file.routes");
 
 const app = express();
 
@@ -21,6 +26,8 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
     "/api/auth",
@@ -40,6 +47,18 @@ app.use(
 app.use(
     "/api/categories",
     categoryRoutes
+);
+
+app.use(
+    "/api/files",
+    fileRoutes
+);
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(__dirname, "uploads")
+    )
 );
 
 app.get(
