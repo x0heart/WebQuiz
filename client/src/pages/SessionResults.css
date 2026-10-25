@@ -1,49 +1,113 @@
+
 .session-results {
   width: min(1100px, calc(100% - 32px));
   margin: 40px auto;
-  color: #222;
+  color: var(--color-text);
 }
 
 .session-results h1 {
-  margin-bottom: 8px;
+  margin: 0 0 8px;
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.25;
 }
 
 .session-results h2 {
   margin-bottom: 24px;
-  color: #555;
+  color: var(--color-text-secondary);
   font-size: 20px;
+  font-weight: 500;
 }
 
 .session-results-back {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.session-results-back:hover {
+  color: var(--color-primary-hover);
 }
 
 .session-results-table-wrapper {
   overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
 .session-results-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .session-results-table th,
 .session-results-table td {
   padding: 14px 16px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
   text-align: left;
+  white-space: nowrap;
 }
 
 .session-results-table th {
-  background: #f3f4f6;
-  font-weight: 600;
+  background: var(--color-primary-light);
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.session-results-table td {
+  color: var(--color-text);
+}
+
+.session-results-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.session-results-table tbody tr:hover {
+  background: var(--color-background);
 }
 
 .session-results-table tbody tr:first-child td {
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.session-results-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .session-results-error {
-  color: #c62828;
+  padding: 12px 16px;
+  border: 1px solid var(--color-error-background);
+  border-radius: var(--radius-control);
+  background: var(--color-error-background);
+  color: var(--color-error);
+}
+
+@media (max-width: 600px) {
+  .session-results {
+    width: calc(100% - 24px);
+    margin: 24px auto;
+  }
+
+  .session-results h2 {
+    font-size: 17px;
+  }
+
+  .session-results-table th,
+  .session-results-table td {
+    padding: 12px;
+    font-size: 14px;
+  }
 }

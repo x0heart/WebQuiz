@@ -1,0 +1,34 @@
+
+:root {
+  /* Цвета */
+  --color-primary: #5b4bdb;
+  --color-primary-hover: #4636c4;
+  --color-primary-light: #eeebff;
+
+  --color-text: #202035;
+  --color-text-secondary: #77778b;
+
+  --color-background: #f7f6ff;
+  --color-surface: #ffffff;
+  --color-border: #e9e7f3;
+
+  --color-error: #a52636;
+  --color-error-background: #fff0f1;
+
+  --color-success: #216b45;
+  --color-success-background: #eaf8f0;
+
+  /* Размеры */
+  --radius-small: 8px;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-large: 20px;
+
+  /* Тени */
+  --shadow-card: 0 12px 36px rgb(39 30 100 / 5%);
+  --shadow-card-hover: 0 10px 30px rgb(39 30 100 / 7%);
+
+  /* Формы */
+  --control-padding: 13px 14px;
+  --focus-ring: 0 0 0 3px rgb(91 75 219 / 12%);
+}

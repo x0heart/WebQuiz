@@ -208,9 +208,7 @@ function Dashboard() {
     <div className="dashboard">
       <section className="dashboard-welcome">
         <div>
-          <span className="dashboard-label">
-            {isOrganizer ? 'КАБИНЕТ ОРГАНИЗАТОРА' : 'КАБИНЕТ УЧАСТНИКА'}
-          </span>
+
 
           <h1>Привет, {user.username}!</h1>
 
