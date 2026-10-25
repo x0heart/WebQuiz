@@ -1,0 +1,78 @@
+
+.home {
+  min-height: calc(100vh - 76px);
+  display: flex;
+  align-items: center;
+  padding: 60px 10%;
+  background:
+    radial-gradient(ellipse at 85% 35%, #e6e2ff 0%, transparent 40%),
+    linear-gradient(135deg, #fafaff 0%, #f2f0ff 100%);
+}
+
+.home-content {
+  max-width: 760px;
+}
+
+.home-label {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #5b4bdb;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.home h1 {
+  margin: 0;
+  color: #202035;
+  font-size: clamp(38px, 5.5vw, 68px);
+  line-height: 1.15;
+  letter-spacing: -2px;
+}
+
+.home h1 span {
+  color: #5b4bdb;
+}
+
+.home-description {
+  max-width: 570px;
+  margin: 26px 0 32px;
+  color: #68687d;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 15px 24px;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.primary-button {
+  color: white;
+  background: #5b4bdb;
+}
+
+.primary-button:hover {
+  background: #4636c4;
+  transform: translateY(-2px);
+}
+
+.secondary-button {
+  color: #343449;
+  background: white;
+  border: 1px solid #e3e0f5;
+}
+
+.secondary-button:hover {
+  border-color: #5b4bdb;
+}
