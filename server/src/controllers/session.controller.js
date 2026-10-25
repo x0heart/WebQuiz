@@ -1,6 +1,8 @@
 const sessionService =
     require("../services/session.service");
 
+const { notifySessionFinished } = require("../websocket/quiz.socket");
+
 async function createSession(req, res) {
     try {
         const quizId = req.params.quizId;
@@ -84,6 +86,8 @@ async function finishSession(req, res) {
                 sessionId,
                 req.user.id
             );
+
+        notifySessionFinished(sessionId);
 
         res.json({
             message: "Сессия завершена",
@@ -297,6 +301,52 @@ async function getActiveSessions(req, res) {
     }
 }
 
+async function getSessionResults(req, res) {
+    try {
+        const sessionId = req.params.sessionId;
+
+        const result = await sessionService.getSessionResults(
+            sessionId,
+            req.user.id,
+            req.user.role
+        );
+
+        res.json(result);
+    } catch (error) {
+        console.error(
+            "Ошибка получения результатов сессии:",
+            error
+        );
+
+        if (error.message === "Сессия не найдена") {
+            return res.status(404).json({
+                message: error.message
+            });
+        }
+
+        if (
+            error.message === "Нет доступа к результатам этой сессии" ||
+            error.message === "Вы не являетесь участником этой сессии"
+        ) {
+            return res.status(403).json({
+                message: error.message
+            });
+        }
+
+        if (
+            error.message ===
+            "Результаты будут доступны после завершения сессии"
+        ) {
+            return res.status(400).json({
+                message: error.message
+            });
+        }
+
+        res.status(500).json({
+            message: "Ошибка получения результатов"
+        });
+    }
+}
 
 module.exports = {
     createSession,
@@ -306,5 +356,6 @@ module.exports = {
     getCurrentQuestion,
     submitAnswer,
     finishSession,
-    getActiveSessions
+    getActiveSessions,
+    getSessionResults
 };

@@ -60,6 +60,10 @@ function ParticipantRoom() {
         setConnectionStatus('Подключено');
       }
 
+      if (data.type === 'session_finished') {
+        navigate(`/sessions/${sessionId}/results`);
+      }
+
       if (data.type === 'question_started') {
         setCurrentQuestion(data);
         setSelectedAnswerIds([]);

@@ -66,4 +66,10 @@ router.get(
     sessionController.getActiveSessions
 );
 
+router.get(
+    "/sessions/:sessionId/results",
+    authMiddleware,
+    sessionController.getSessionResults
+);
+
 module.exports = router;

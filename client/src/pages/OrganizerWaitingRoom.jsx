@@ -58,6 +58,10 @@ function OrganizerWaitingRoom() {
         setConnectionStatus('Подключено');
       }
 
+      if (data.type === 'session_finished') {
+        navigate(`/sessions/${sessionId}/results`);
+      }
+
       if (data.type === 'participants_list') {
         setParticipants(data.participants);
       }
@@ -182,6 +186,20 @@ function OrganizerWaitingRoom() {
     }));
   }
 
+  async function handleFinishGame() {
+    setError('');
+
+    try {
+      await api.patch(`/sessions/${sessionId}/finish`);
+      navigate(`/sessions/${sessionId}/results`);
+    } catch (err) {
+        setError(
+        err.response?.data?.message ||
+        'Не удалось завершить игру.'
+        );
+    }
+  }
+
   async function handleCopyCode() {
     if (!session?.room_code) return;
 
@@ -289,6 +307,12 @@ function OrganizerWaitingRoom() {
                         ? `Осталось: ${remainingTime} сек.`
                         : 'Время вышло'}
                   </span>
+                  <button
+                    className="waiting-room-start"
+                    onClick={handleFinishGame}
+                  >
+                    Завершить игру
+                  </button>
                 </div>
               )}
             </section>

@@ -862,6 +862,84 @@ async function getActiveSessions(organizerId) {
     return result.rows;
 }
 
+async function getSessionResults(sessionId, userId, role) {
+    const sessionResult = await pool.query(
+        `
+        SELECT
+            qs.id,
+            qs.quiz_id,
+            qs.status,
+            q.title AS quiz_title,
+            q.organizer_id
+        FROM quiz_sessions qs
+        JOIN quizzes q ON q.id = qs.quiz_id
+        WHERE qs.id = $1
+        `,
+        [sessionId]
+    );
+
+    if (sessionResult.rows.length === 0) {
+        throw new Error("Сессия не найдена");
+    }
+
+    const session = sessionResult.rows[0];
+
+    // Проверяем право доступа
+    if (role === "organizer") {
+        if (Number(session.organizer_id) !== Number(userId)) {
+            throw new Error("Нет доступа к результатам этой сессии");
+        }
+    } else if (role === "participant") {
+        const participantResult = await pool.query(
+            `
+            SELECT id
+            FROM participants
+            WHERE session_id = $1
+              AND user_id = $2
+            `,
+            [sessionId, userId]
+        );
+
+        if (participantResult.rows.length === 0) {
+            throw new Error("Вы не являетесь участником этой сессии");
+        }
+    } else {
+        throw new Error("Нет доступа к результатам этой сессии");
+    }
+
+    if (session.status !== "finished") {
+        throw new Error("Результаты будут доступны после завершения сессии");
+    }
+
+    const resultsResult = await pool.query(
+        `
+        SELECT
+            qr.participant_id,
+            u.username,
+            qr.total_score,
+            qr.correct_answers,
+            qr.wrong_answers,
+            qr.place,
+            qr.completed_at
+        FROM quiz_results qr
+        JOIN participants p ON p.id = qr.participant_id
+        JOIN users u ON u.id = p.user_id
+        WHERE qr.session_id = $1
+        ORDER BY qr.place ASC, u.username ASC
+        `,
+        [sessionId]
+    );
+
+    return {
+        session: {
+            id: session.id,
+            quizId: session.quiz_id,
+            quizTitle: session.quiz_title,
+            status: session.status
+        },
+        results: resultsResult.rows
+    };
+}
 
 module.exports = {
     createSession,
@@ -871,5 +949,6 @@ module.exports = {
     getCurrentQuestion,
     submitAnswer,
     finishSession,
-    getActiveSessions
+    getActiveSessions,
+    getSessionResults
 };

@@ -1,0 +1,49 @@
+.session-results {
+  width: min(1100px, calc(100% - 32px));
+  margin: 40px auto;
+  color: #222;
+}
+
+.session-results h1 {
+  margin-bottom: 8px;
+}
+
+.session-results h2 {
+  margin-bottom: 24px;
+  color: #555;
+  font-size: 20px;
+}
+
+.session-results-back {
+  margin-bottom: 24px;
+}
+
+.session-results-table-wrapper {
+  overflow-x: auto;
+}
+
+.session-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.session-results-table th,
+.session-results-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.session-results-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.session-results-table tbody tr:first-child td {
+  font-weight: 600;
+}
+
+.session-results-error {
+  color: #c62828;
+}

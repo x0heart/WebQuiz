@@ -53,6 +53,8 @@ function setupQuizSocket(server) {
         }
     }
 
+    notifySessionFinished.sendToSession = sendToSession;
+
     async function sendAnswerProgress(sessionId, questionId) {
         try {
             const result = await pool.query(
@@ -967,4 +969,19 @@ function setupQuizSocket(server) {
     return wss;
 }
 
+
+function notifySessionFinished(sessionId) {
+    if (typeof notifySessionFinished.sendToSession === "function") {
+        const numericSessionId = Number(sessionId);
+
+        notifySessionFinished.sendToSession(numericSessionId, {
+            type: "session_finished",
+            sessionId: numericSessionId,
+            message: "Игра завершена организатором"
+        });
+    }
+}
+
+
 module.exports = setupQuizSocket;
+module.exports.notifySessionFinished = notifySessionFinished;

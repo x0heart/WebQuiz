@@ -11,6 +11,7 @@ import QuizEditor from './pages/QuizEditor';
 import JoinQuiz from './pages/JoinQuiz';
 import OrganizerWaitingRoom from './pages/OrganizerWaitingRoom';
 import ParticipantRoom from './pages/ParticipantRoom';
+import SessionResults from './pages/SessionResults';
 
 import './App.css';
 
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/sessions/:sessionId/participant"
             element={<ParticipantRoom />}
+          />
+          <Route
+            path="/sessions/:sessionId/results"
+            element={<SessionResults />}
           />
         </Routes>
       </main>
