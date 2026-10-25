@@ -1,0 +1,255 @@
+
+.dashboard {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 48px 28px 80px;
+}
+
+.dashboard-welcome {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.dashboard-label {
+  color: #5b4bdb;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.dashboard-welcome h1 {
+  margin: 12px 0;
+  color: #202035;
+  font-size: clamp(30px, 4vw, 42px);
+  letter-spacing: -1.2px;
+}
+
+.dashboard-welcome p {
+  margin: 0;
+  color: #77778b;
+  line-height: 1.7;
+}
+
+.logout-button {
+  padding: 10px 18px;
+  color: #45445a;
+  background: white;
+  border: 1px solid #e3e0ef;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  border-color: #5b4bdb;
+}
+
+.dashboard-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 44px;
+}
+
+.dashboard-action {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 116px;
+  padding: 24px;
+  color: #29283f;
+  background: white;
+  border: 1px solid #e9e7f3;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgb(39 30 100 / 7%);
+}
+
+.dashboard-action.primary {
+  color: white;
+  background: #5b4bdb;
+  border-color: #5b4bdb;
+}
+
+.action-icon {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  background: #f0edff;
+  color: #5b4bdb;
+  border-radius: 13px;
+  font-size: 26px;
+}
+
+.primary .action-icon {
+  color: white;
+  background: rgb(255 255 255 / 18%);
+}
+
+.dashboard-action strong,
+.dashboard-action small {
+  display: block;
+}
+
+.dashboard-action strong {
+  margin-bottom: 7px;
+  font-size: 16px;
+}
+
+.dashboard-action small {
+  color: #77778b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dashboard-action.primary small {
+  color: #e9e6ff;
+}
+
+.dashboard-section {
+  margin-top: 40px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #29283f;
+  font-size: 23px;
+}
+
+.section-heading > span {
+  display: grid;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  place-items: center;
+  color: #5b4bdb;
+  background: #eeebff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dashboard-empty {
+  padding: 34px 24px;
+  background: white;
+  border: 1px dashed #dcd8ed;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.dashboard-empty h3 {
+  margin: 0 0 10px;
+  color: #343449;
+}
+
+.dashboard-empty p {
+  margin: 0 0 16px;
+  color: #77778b;
+  line-height: 1.6;
+}
+
+.text-link {
+  color: #5b4bdb;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.dashboard-list {
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e9e7f3;
+  border-radius: 14px;
+}
+
+.dashboard-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+}
+
+.dashboard-item + .dashboard-item {
+  border-top: 1px solid #eeedf5;
+}
+
+.dashboard-item h3 {
+  margin: 0 0 8px;
+  color: #29283f;
+  font-size: 16px;
+}
+
+.dashboard-item p {
+  margin: 0;
+  color: #77778b;
+  font-size: 13px;
+}
+
+.item-status {
+  padding: 6px 10px;
+  color: #4d438e;
+  background: #f0edff;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.history-result {
+  color: #5b4bdb;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dashboard-message {
+  padding: 80px 20px;
+  color: #77778b;
+  text-align: center;
+}
+
+.dashboard-error {
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  color: #a52636;
+  background: #fff0f1;
+  border-radius: 10px;
+  line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+  .dashboard {
+    padding: 32px 18px 60px;
+  }
+
+  .dashboard-welcome {
+    flex-direction: column;
+  }
+
+  .dashboard-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-item {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .history-result {
+    font-size: 13px;
+  }
+}
