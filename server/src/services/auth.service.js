@@ -2,16 +2,12 @@ const pool = require("../config/database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
-// Регистрация
-
 async function register(
     username,
     email,
     password,
     role
 ){
-
     const existingUser = await pool.query(
         `
         SELECT id 
@@ -24,21 +20,16 @@ async function register(
         ]
     );
 
-
     if(existingUser.rows.length > 0){
-
         throw new Error(
             "Пользователь уже существует"
         );
-
     }
-
 
     const passwordHash = await bcrypt.hash(
         password,
         10
     );
-
 
     const result = await pool.query(
         `
@@ -49,10 +40,8 @@ async function register(
             password_hash,
             role
         )
-
         VALUES
         ($1,$2,$3,$4)
-
         RETURNING id, username, email, role
         `,
         [
@@ -63,20 +52,13 @@ async function register(
         ]
     );
 
-
     return result.rows[0];
-
 }
-
-
-
-// Авторизация
 
 async function login(
     email,
     password
 ){
-
     const result = await pool.query(
         `
         SELECT *
@@ -88,18 +70,13 @@ async function login(
         ]
     );
 
-
     if(result.rows.length === 0){
-
         throw new Error(
             "Пользователь не найден"
         );
-
     }
 
-
     const user = result.rows[0];
-
 
     const validPassword =
         await bcrypt.compare(
@@ -107,49 +84,34 @@ async function login(
             user.password_hash
         );
 
-
     if(!validPassword){
-
         throw new Error(
             "Неверный пароль"
         );
-
     }
 
-
     const token = jwt.sign(
-
         {
             id:user.id,
             role:user.role
         },
 
         process.env.JWT_SECRET,
-
         {
             expiresIn:"24h"
         }
-
     );
 
-
     return {
-
         token,
-
         user:{
             id:user.id,
             username:user.username,
             email:user.email,
             role:user.role
         }
-
     };
-
-
 }
-
-
 
 module.exports = {
     register,

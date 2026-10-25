@@ -1,8 +1,5 @@
 const pool = require("../config/database");
 
-
-// создание квиза
-
 async function createQuiz(
     organizerId,
     title,
@@ -10,7 +7,6 @@ async function createQuiz(
     categoryId,
     questionTime
 ){
-
     const result = await pool.query(
         `
         INSERT INTO quizzes
@@ -36,13 +32,10 @@ async function createQuiz(
         ]
     );
 
-
     return result.rows[0];
-
 }
 
 async function getQuizzesByOrganizer(organizerId) {
-
     const result = await pool.query(
         `
         SELECT

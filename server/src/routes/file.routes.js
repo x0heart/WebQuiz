@@ -13,7 +13,6 @@ const roleMiddleware =
 const upload =
     require("../middleware/upload.middleware");
 
-
 router.post(
     "/upload",
     authMiddleware,
@@ -21,6 +20,5 @@ router.post(
     upload.single("file"),
     fileController.uploadFile
 );
-
 
 module.exports = router;

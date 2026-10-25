@@ -10,14 +10,12 @@ const authMiddleware =
 const roleMiddleware =
     require("../middleware/role.middleware");
 
-
 router.post(
     "/",
     authMiddleware,
     roleMiddleware("organizer"),
     quizController.createQuiz
 );
-
 
 router.get(
     "/",
@@ -26,14 +24,12 @@ router.get(
     quizController.getMyQuizzes
 );
 
-
 router.get(
     "/:id",
     authMiddleware,
     roleMiddleware("organizer"),
     quizController.getQuizById
 );
-
 
 router.put(
     "/:id",
@@ -42,13 +38,11 @@ router.put(
     quizController.updateQuiz
 );
 
-
 router.delete(
     "/:id",
     authMiddleware,
     roleMiddleware("organizer"),
     quizController.deleteQuiz
 );
-
 
 module.exports = router;

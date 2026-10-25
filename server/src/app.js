@@ -6,17 +6,21 @@ const path = require("path");
 require("dotenv").config();
 
 const authRoutes =
-require("./routes/auth.routes");
-const authMiddleware = 
-require("./middleware/auth.middleware");
+    require("./routes/auth.routes");
 const quizRoutes =
-require("./routes/quiz.routes");
+    require("./routes/quiz.routes");
 const questionRoutes =
     require("./routes/question.routes");
 const categoryRoutes =
     require("./routes/category.routes");
 const fileRoutes =
     require("./routes/file.routes");
+const profileRoutes =
+    require("./routes/profile.routes");
+const historyRoutes =
+    require("./routes/history.routes");
+const sessionRoutes =
+    require("./routes/session.routes");
 
 const app = express();
 
@@ -55,27 +59,28 @@ app.use(
 );
 
 app.use(
+    "/api/profile",
+    profileRoutes
+);
+
+app.use(
+    "/api/history",
+    historyRoutes
+);
+
+app.use(
+    "/api",
+    sessionRoutes
+);
+
+app.use(
     "/uploads",
     express.static(
         path.join(__dirname, "uploads")
     )
 );
 
-app.get(
-    "/api/profile",
-    authMiddleware,
-    (req,res)=>{
 
-        res.json({
-
-            message:"Доступ разрешен",
-
-            user:req.user
-
-        });
-
-    }
-);
 
 // Тестовый маршрут
 

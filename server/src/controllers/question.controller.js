@@ -2,9 +2,7 @@ const questionService =
     require("../services/question.service");
 
 async function createQuestion(req, res) {
-
     try {
-
         const quizId = Number(req.params.id);
         const organizerId = req.user.id;
 
@@ -53,10 +51,8 @@ async function createQuestion(req, res) {
             message: "Вопрос создан",
             question
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка создания вопроса:",
             error
@@ -69,9 +65,7 @@ async function createQuestion(req, res) {
 }
 
 async function getQuestionsByQuiz(req, res) {
-
     try {
-
         const quizId = Number(req.params.id);
         const organizerId = req.user.id;
 
@@ -96,10 +90,8 @@ async function getQuestionsByQuiz(req, res) {
         res.json({
             questions
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка получения вопросов:",
             error
@@ -112,9 +104,7 @@ async function getQuestionsByQuiz(req, res) {
 }
 
 async function updateQuestion(req, res) {
-
     try {
-
         const quizId = Number(req.params.quizId);
         const questionId = Number(req.params.questionId);
         const organizerId = req.user.id;
@@ -177,10 +167,8 @@ async function updateQuestion(req, res) {
             message: "Вопрос обновлен",
             question
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка обновления вопроса:",
             error
@@ -193,9 +181,7 @@ async function updateQuestion(req, res) {
 }
 
 async function deleteQuestion(req, res) {
-
     try {
-
         const quizId = Number(req.params.quizId);
         const questionId = Number(req.params.questionId);
 
@@ -229,10 +215,8 @@ async function deleteQuestion(req, res) {
         res.json({
             message: "Вопрос удален"
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка удаления вопроса:",
             error

@@ -1,13 +1,8 @@
 const quizService =
 require("../services/quiz.service");
 
-
-
 async function createQuiz(req,res){
-
     try{
-
-
         const {
             title,
             description,
@@ -15,12 +10,8 @@ async function createQuiz(req,res){
             questionTime
         } = req.body;
 
-
-
         const organizerId =
             req.user.id;
-
-
 
         const quiz =
             await quizService.createQuiz(
@@ -31,38 +22,21 @@ async function createQuiz(req,res){
                 questionTime
             );
 
-
-
         res.status(201).json({
-
             message:
             "Квиз создан",
-
             quiz
-
         });
-
-
-
     }
     catch(error){
-
-
         res.status(400).json({
-
             message:error.message
-
         });
-
-
     }
-
 }
 
 async function getMyQuizzes(req, res) {
-
     try {
-
         const organizerId = req.user.id;
 
         const quizzes =
@@ -73,23 +47,18 @@ async function getMyQuizzes(req, res) {
         res.json({
             quizzes
         });
-
     }
     catch (error) {
-
         console.error(error);
 
         res.status(500).json({
             message: "Ошибка получения квизов"
         });
-
     }
-
 }
 
 async function getQuizById(req, res) {
     try {
-
         const quizId = req.params.id;
         const organizerId = req.user.id;
 
@@ -108,10 +77,8 @@ async function getQuizById(req, res) {
         res.json({
             quiz
         });
-
     }
     catch (error) {
-
         console.error(error);
 
         res.status(500).json({
@@ -122,7 +89,6 @@ async function getQuizById(req, res) {
 
 async function updateQuiz(req, res) {
     try {
-
         const quizId = Number(req.params.id);
         const organizerId = req.user.id;
 
@@ -167,10 +133,8 @@ async function updateQuiz(req, res) {
             message: "Квиз обновлен",
             quiz
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка обновления квиза:",
             error
@@ -184,7 +148,6 @@ async function updateQuiz(req, res) {
 
 async function deleteQuiz(req, res) {
     try {
-
         const quizId = Number(req.params.id);
         const organizerId = req.user.id;
 
@@ -209,10 +172,8 @@ async function deleteQuiz(req, res) {
         res.json({
             message: "Квиз удален"
         });
-
     }
     catch (error) {
-
         console.error(
             "Ошибка удаления квиза:",
             error

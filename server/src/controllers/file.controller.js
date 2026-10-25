@@ -5,7 +5,6 @@ const fileService =
 
 async function uploadFile(req, res) {
     try {
-
         if (!req.file) {
             return res.status(400).json({
                 message: "Файл не загружен"
@@ -30,9 +29,7 @@ async function uploadFile(req, res) {
             message: "Файл успешно загружен",
             file: savedFile
         });
-
     } catch (error) {
-
         console.error(
             "Ошибка загрузки файла:",
             error

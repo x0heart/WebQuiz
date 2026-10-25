@@ -1,21 +1,15 @@
 const authService = require("../services/auth.service");
 
-
-
 // регистрация
 
 async function register(req,res){
-
     try{
-
         const {
             username,
             email,
             password,
             role
         } = req.body;
-
-
 
         const user =
             await authService.register(
@@ -25,44 +19,28 @@ async function register(req,res){
                 role
             );
 
-
         res.status(201).json({
             message:
             "Пользователь создан",
 
             user
         });
-
-
     }
     catch(error){
-
         res.status(400).json({
-
             message:error.message
-
         });
-
     }
-
 }
-
-
-
-
 
 // вход
 
 async function login(req,res){
-
     try{
-
         const {
             email,
             password
         } = req.body;
-
-
 
         const data =
             await authService.login(
@@ -70,24 +48,15 @@ async function login(req,res){
                 password
             );
 
-
         res.json(data);
-
-
     }
     catch(error){
 
         res.status(400).json({
-
             message:error.message
-
         });
-
     }
-
 }
-
-
 
 module.exports={
     register,

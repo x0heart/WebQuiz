@@ -62,7 +62,6 @@ async function deleteFile(fileId) {
 }
 
 async function removePhysicalFile(file) {
-
     if (!file || !file.stored_name) {
         return;
     }
@@ -79,7 +78,6 @@ async function removePhysicalFile(file) {
 }
 
 async function deleteFileIfUnused(fileId) {
-
     const usageResult = await pool.query(
         `
         SELECT id

@@ -1,7 +1,6 @@
 const pool = require("../config/database");
 
 async function getCategories() {
-
     const result = await pool.query(
         `
         SELECT

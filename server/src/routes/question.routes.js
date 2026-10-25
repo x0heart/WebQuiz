@@ -10,14 +10,12 @@ const authMiddleware =
 const roleMiddleware =
     require("../middleware/role.middleware");
 
-
 router.post(
     "/quizzes/:id/questions",
     authMiddleware,
     roleMiddleware("organizer"),
     questionController.createQuestion
 );
-
 
 router.get(
     "/quizzes/:id/questions",
@@ -26,7 +24,6 @@ router.get(
     questionController.getQuestionsByQuiz
 );
 
-
 router.put(
     "/quizzes/:quizId/questions/:questionId",
     authMiddleware,
@@ -34,13 +31,11 @@ router.put(
     questionController.updateQuestion
 );
 
-
 router.delete(
     "/quizzes/:quizId/questions/:questionId",
     authMiddleware,
     roleMiddleware("organizer"),
     questionController.deleteQuestion
 );
-
 
 module.exports = router;
