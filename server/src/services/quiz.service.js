@@ -189,7 +189,7 @@ async function updateQuiz(
             description = $2,
             category_id = $3,
             question_time = $4,
-            is_active = $5
+            is_active = COALESCE($5, is_active)
         WHERE id = $6
           AND organizer_id = $7
         RETURNING *
@@ -199,7 +199,7 @@ async function updateQuiz(
             description,
             categoryId,
             questionTime,
-            isActive,
+            isActive ?? null,
             quizId,
             organizerId
         ]

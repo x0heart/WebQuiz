@@ -18,7 +18,7 @@ Thumbs.db
 .idea/
 
 # Uploaded files
-backend/src/uploads/
+server/src/uploads/
 
 # Temporary files
 *.tmp
