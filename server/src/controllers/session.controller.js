@@ -276,6 +276,28 @@ async function submitAnswer(req, res) {
     }
 }
 
+async function getActiveSessions(req, res) {
+    try {
+        const sessions =
+            await sessionService.getActiveSessions(
+                req.user.id
+            );
+
+        res.json({ sessions });
+    } catch (error) {
+        console.error(
+            "Ошибка получения незавершённых сессий:",
+            error
+        );
+
+        res.status(500).json({
+            message:
+                "Ошибка получения незавершённых сессий"
+        });
+    }
+}
+
+
 module.exports = {
     createSession,
     startSession,
@@ -283,5 +305,6 @@ module.exports = {
     getSessionParticipants,
     getCurrentQuestion,
     submitAnswer,
-    finishSession
+    finishSession,
+    getActiveSessions
 };

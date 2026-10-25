@@ -59,4 +59,11 @@ router.post(
     sessionController.submitAnswer
 );
 
+router.get(
+    "/sessions/active",
+    authMiddleware,
+    roleMiddleware("organizer"),
+    sessionController.getActiveSessions
+);
+
 module.exports = router;

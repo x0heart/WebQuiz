@@ -8,6 +8,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreateQuiz from './pages/CreateQuiz';
 import QuizEditor from './pages/QuizEditor';
+import JoinQuiz from './pages/JoinQuiz';
+import OrganizerWaitingRoom from './pages/OrganizerWaitingRoom';
+import ParticipantRoom from './pages/ParticipantRoom';
 
 import './App.css';
 
@@ -24,6 +27,15 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quizzes/new" element={<CreateQuiz />} />
           <Route path="/quizzes/:id/edit" element={<QuizEditor />} />
+          <Route path="/join" element={<JoinQuiz />} />
+          <Route
+            path="/sessions/:sessionId/waiting"
+            element={<OrganizerWaitingRoom />}
+          />
+          <Route
+            path="/sessions/:sessionId/participant"
+            element={<ParticipantRoom />}
+          />
         </Routes>
       </main>
     </BrowserRouter>

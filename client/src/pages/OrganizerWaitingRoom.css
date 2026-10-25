@@ -1,0 +1,157 @@
+
+.waiting-room {
+  width: min(800px, calc(100% - 32px));
+  margin: 40px auto;
+  color: #1f2937;
+}
+
+.waiting-room h1 {
+  margin: 24px 0 8px;
+  font-size: 30px;
+}
+
+.waiting-room-connection {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.waiting-room-back {
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font: inherit;
+  cursor: pointer;
+}
+
+.waiting-room-code-card,
+.waiting-room-participants {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.waiting-room-code-card {
+  text-align: center;
+}
+
+.waiting-room-code-card p {
+  color: #6b7280;
+}
+
+.waiting-room-code {
+  margin: 16px 0;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  overflow-wrap: anywhere;
+}
+
+.waiting-room-copy,
+.waiting-room-start {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.waiting-room-copy {
+  background: #2563eb;
+}
+
+.waiting-room-copy:hover {
+  background: #1d4ed8;
+}
+
+.waiting-room-participants h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.waiting-room-participants h2 span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 14px;
+}
+
+.waiting-room-participants ul {
+  padding: 0;
+  list-style: none;
+}
+
+.waiting-room-participants li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.participant-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.waiting-room-empty {
+  color: #6b7280;
+}
+
+.waiting-room-start {
+  width: 100%;
+  margin-top: 24px;
+  background: #16a34a;
+}
+
+.waiting-room-start:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.waiting-room-start:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.waiting-room-started {
+  margin-top: 24px;
+  font-weight: 600;
+}
+
+.waiting-room-error {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+@media (max-width: 600px) {
+  .waiting-room {
+    margin-top: 20px;
+  }
+
+  .waiting-room-code-card,
+  .waiting-room-participants {
+    padding: 16px;
+  }
+
+  .waiting-room-code {
+    font-size: 28px;
+    letter-spacing: 4px;
+  }
+}

@@ -440,21 +440,41 @@ function setupQuizSocket(server) {
                             process.env.JWT_SECRET
                         );
 
-                        ws.user = decoded;
+                        const userResult = await pool.query(
+                            `
+                            SELECT id, username, role
+                            FROM users
+                            WHERE id = $1
+                            `,
+                            [decoded.id]
+                        );
+
+                        if (userResult.rows.length === 0) {
+                            ws.send(JSON.stringify({
+                                type: "error",
+                                message: "Пользователь не найден"
+                            }));
+
+                            return;
+                        }
+
+                        ws.user = userResult.rows[0];
 
                         ws.send(JSON.stringify({
                             type: "authenticated",
                             user: {
-                                id: decoded.id,
-                                role: decoded.role
+                                id: ws.user.id,
+                                username: ws.user.username,
+                                role: ws.user.role
                             }
                         }));
 
                         console.log(
-                            `WebSocket авторизация: user ${decoded.id}`
+                            `WebSocket авторизация: user ${ws.user.id}`
                         );
 
                     } catch (error) {
+                        console.error("Ошибка WebSocket авторизации:", error);
 
                         ws.send(JSON.stringify({
                             type: "error",
@@ -595,6 +615,33 @@ function setupQuizSocket(server) {
                         }
                     }));
 
+                    // Отправляем новому клиенту список уже подключённых пользователей
+                    const roomClients = sessions.get(sessionId) || new Set();
+
+                    const participants = [
+                        ...new Map(
+                            [...roomClients]
+                                .filter(
+                                    (client) =>
+                                        client.readyState === WebSocket.OPEN &&
+                                        client.user
+                                )
+                                .map((client) => [
+                                    client.user.id,
+                                    {
+                                        userId: client.user.id,
+                                        username: client.user.username,
+                                        role: client.user.role
+                                    }
+                                ])
+                        ).values()
+                    ];
+
+                    ws.send(JSON.stringify({
+                        type: "participants_list",
+                        participants
+                    }));
+
                     const currentResult = await pool.query(
                         `
                         SELECT
@@ -659,6 +706,7 @@ function setupQuizSocket(server) {
                     sendToSession(sessionId, {
                         type: "participant_connected",
                         userId: ws.user.id,
+                        username: ws.user.username,
                         role: ws.user.role
                     });
 

@@ -839,6 +839,30 @@ async function submitAnswer(
     };
 }
 
+async function getActiveSessions(organizerId) {
+    const result = await pool.query(
+        `
+        SELECT
+            qs.id,
+            qs.quiz_id,
+            qs.room_code,
+            qs.status,
+            qs.started_at,
+            q.title AS quiz_title
+        FROM quiz_sessions qs
+        JOIN quizzes q
+            ON q.id = qs.quiz_id
+        WHERE q.organizer_id = $1
+          AND qs.status IN ('waiting', 'started')
+        ORDER BY qs.id DESC
+        `,
+        [organizerId]
+    );
+
+    return result.rows;
+}
+
+
 module.exports = {
     createSession,
     startSession,
@@ -846,5 +870,6 @@ module.exports = {
     getSessionParticipants,
     getCurrentQuestion,
     submitAnswer,
-    finishSession
+    finishSession,
+    getActiveSessions
 };

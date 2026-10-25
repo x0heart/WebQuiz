@@ -14,6 +14,12 @@ function Dashboard() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeSession, setActiveSession] = useState(null);
+  const [creatingSessionFor, setCreatingSessionFor] = useState(null);
+  const [sessionError, setSessionError] = useState('');
+  const [activeSessions, setActiveSessions] = useState([]);
+  const [sessionsLoading, setSessionsLoading] = useState(true);
+  const [sessionsError, setSessionsError] = useState('');
 
   const isOrganizer = user?.role === 'organizer';
 
@@ -91,12 +97,104 @@ function Dashboard() {
       cancelled = true;
     };
   }, [navigate]);
+  
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadActiveSessions() {
+      try {
+        const response = await api.get('/sessions/active');
+
+        if (!cancelled) {
+          setActiveSessions(response.data.sessions || []);
+          setSessionsError('');
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setSessionsError(
+            err.response?.data?.message ||
+            'Не удалось загрузить незавершённые игры.'
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setSessionsLoading(false);
+        }
+      }
+    }
+
+    if (user?.role === 'organizer') {
+      loadActiveSessions();
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.role]);
 
   function handleLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/login');
   }
+
+  async function handleCreateSession(quiz) {
+    setCreatingSessionFor(quiz.id);
+    setSessionError('');
+    setActiveSession(null);
+
+    try {
+      const response = await api.post(
+        `/quizzes/${quiz.id}/sessions`
+      );
+
+      const session = response.data.session ?? response.data;
+
+      const sessionId = session.id ?? session.sessionId;
+      const roomCode = session.room_code ?? session.roomCode;
+
+      if (!sessionId || !roomCode) {
+        setSessionError(
+          'Сессия создана, но сервер вернул неожиданный формат ответа.'
+        );
+        console.error('Ответ создания сессии:', response.data);
+        return;
+      }
+
+      setActiveSession({
+        id: sessionId,
+        roomCode,
+        quizTitle: quiz.title,
+      });
+    } catch (err) {
+      setSessionError(
+        err.response?.data?.message ||
+        'Не удалось создать игровую комнату.'
+      );
+    } finally {
+      setCreatingSessionFor(null);
+    }
+  }
+/*
+  async function handleStartSession() {
+    if (!activeSession) return;
+
+    setSessionError('');
+
+    try {
+      await api.patch(`/sessions/${activeSession.id}/start`);
+
+      setActiveSession((prev) => ({
+        ...prev,
+        status: 'started',
+      }));
+    } catch (err) {
+      setSessionError(
+        err.response?.data?.message ||
+        'Не удалось запустить игру.'
+      );
+    }
+  }*/
 
   if (loading) {
     return <div className="dashboard-message">Загружаем личный кабинет...</div>;
@@ -202,6 +300,18 @@ function Dashboard() {
                     <span className="item-status">
                     {quiz.is_active ? 'Активен' : 'Черновик'}
                     </span>
+                    {quiz.is_active && (
+                    <button
+                    type="button"
+                    className="create-session-button"
+                    onClick={() => handleCreateSession(quiz)}
+                    disabled={creatingSessionFor !== null}
+                    >
+                    {creatingSessionFor === quiz.id
+                        ? 'Создание...'
+                        : 'Создать игровую комнату'}
+                    </button>
+                    )}
 
                     <button
                     type="button"
@@ -215,8 +325,88 @@ function Dashboard() {
               ))}
             </div>
           )}
+
+          {sessionError && (
+              <div className="dashboard-error">
+              {sessionError}
+            </div>
+          )}
+
+          {activeSession && (
+            <section className="dashboard-section session-created">
+              <h2>Игровая комната создана</h2>
+
+              <p>
+                Квиз: <strong>{activeSession.quizTitle}</strong>
+              </p>
+
+              <p>Код комнаты: <strong> {activeSession.roomCode}</strong></p>
+              
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(`/sessions/${activeSession.id}/waiting`)
+                }
+              >
+                Открыть комнату
+              </button>
+            </section>
+           )}
         </section>
       )}
+
+      
+      {isOrganizer && (
+        <section className="dashboard-section">
+          <h2>Незавершённые игры</h2>
+
+          {sessionsLoading ? (
+              <p>Загрузка игр...</p>
+          ) : sessionsError ? (
+              <p className="dashboard-error">{sessionsError}</p>
+          ) : activeSessions.length === 0 ? (
+              <p>У вас нет незавершённых игр.</p>
+          ) : (
+            <div className="dashboard-list">
+              {activeSessions.map((session) => (
+                <article
+                  className="dashboard-item"
+                  key={session.id}
+                >
+                  <div>
+                    <h3>{session.quiz_title}</h3>
+
+                      <p>
+                        Код комнаты: {session.room_code}
+                      </p>
+                  </div>
+
+                  <div className="quiz-item-actions">
+                    <span className="item-status">
+                      {session.status === 'waiting'
+                        ? 'Ожидание участников'
+                        : 'Игра идёт'}
+                    </span>
+
+                    <button
+                      type="button"
+                      className="edit-quiz-button"
+                      onClick={() =>
+                        navigate(
+                        `/sessions/${session.id}/waiting`
+                        )
+                      }
+                    >
+                      Открыть комнату
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
 
       <section className="dashboard-section" id="history">
         <div className="section-heading">
