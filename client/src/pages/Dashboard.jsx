@@ -189,18 +189,28 @@ function Dashboard() {
             <div className="dashboard-list">
               {quizzes.map((quiz) => (
                 <article className="dashboard-item" key={quiz.id}>
-                  <div>
+                <div>
                     <h3>{quiz.title}</h3>
                     <p>
-                      {quiz.category_name || 'Без категории'}
-                      {' · '}
-                      {quiz.question_count ?? 0} вопросов
+                    {quiz.category_name || 'Без категории'}
+                    {' · '}
+                    {quiz.question_count ?? 0} вопросов
                     </p>
-                  </div>
+                </div>
 
-                  <span className="item-status">
+                <div className="quiz-item-actions">
+                    <span className="item-status">
                     {quiz.is_active ? 'Активен' : 'Черновик'}
-                  </span>
+                    </span>
+
+                    <button
+                    type="button"
+                    className="edit-quiz-button"
+                    onClick={() => navigate(`/quizzes/${quiz.id}/edit`)}
+                    >
+                    Редактировать
+                    </button>
+                </div>
                 </article>
               ))}
             </div>

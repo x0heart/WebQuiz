@@ -253,3 +253,28 @@
     font-size: 13px;
   }
 }
+
+.quiz-item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.edit-quiz-button {
+  padding: 9px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #1f2937;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.edit-quiz-button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}

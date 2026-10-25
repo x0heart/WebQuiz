@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import CreateQuiz from './pages/CreateQuiz';
+import QuizEditor from './pages/QuizEditor';
 
 import './App.css';
 
@@ -20,6 +22,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/quizzes/new" element={<CreateQuiz />} />
+          <Route path="/quizzes/:id/edit" element={<QuizEditor />} />
         </Routes>
       </main>
     </BrowserRouter>

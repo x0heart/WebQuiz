@@ -1,0 +1,124 @@
+
+.create-quiz-page {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  padding: 44px 24px 80px;
+}
+
+.create-quiz-heading {
+  margin-bottom: 28px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: #5b4bdb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.create-quiz-heading h1 {
+  margin: 12px 0;
+  color: #202035;
+  font-size: clamp(30px, 4vw, 40px);
+  letter-spacing: -1px;
+}
+
+.create-quiz-heading p {
+  color: #77778b;
+  line-height: 1.7;
+}
+
+.create-quiz-card {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background: white;
+  border: 1px solid #e9e7f3;
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgb(39 30 100 / 5%);
+}
+
+.create-quiz-card label {
+  margin: 18px 0 9px;
+  color: #343449;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.create-quiz-card input,
+.create-quiz-card textarea,
+.create-quiz-card select {
+  width: 100%;
+  padding: 13px 14px;
+  color: #202035;
+  background: #fff;
+  border: 1px solid #deddea;
+  border-radius: 9px;
+  outline: none;
+}
+
+.create-quiz-card textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.create-quiz-card input:focus,
+.create-quiz-card textarea:focus,
+.create-quiz-card select:focus {
+  border-color: #5b4bdb;
+  box-shadow: 0 0 0 3px rgb(91 75 219 / 12%);
+}
+
+.question-time-field {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.question-time-field input {
+  max-width: 180px;
+}
+
+.question-time-field span {
+  color: #77778b;
+  font-size: 14px;
+}
+
+.form-hint {
+  margin: 8px 0 0;
+  color: #858498;
+  font-size: 12px;
+}
+
+.create-quiz-submit {
+  margin-top: 30px;
+  padding: 15px 20px;
+  color: white;
+  background: #5b4bdb;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-quiz-submit:hover:not(:disabled) {
+  background: #4636c4;
+}
+
+.create-quiz-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+  .create-quiz-page {
+    padding: 28px 16px 56px;
+  }
+
+  .create-quiz-card {
+    padding: 22px 18px;
+  }
+}
