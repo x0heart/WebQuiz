@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model answers {
+  id                  BigInt                @id @default(autoincrement())
+  question_id         BigInt
+  answer_text         String
+  is_correct          Boolean?              @default(false)
+  questions           questions             @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_answer_question")
+  participant_answers participant_answers[]
+
+  @@index([question_id], map: "idx_answers_question")
+}
+
+model categories {
+  id      BigInt    @id @default(autoincrement())
+  name    String    @unique @db.VarChar(100)
+  quizzes quizzes[]
+}
+
+model files {
+  id            BigInt      @id @default(autoincrement())
+  original_name String      @db.VarChar(255)
+  stored_name   String      @unique @db.VarChar(255)
+  file_path     String
+  mime_type     String      @db.VarChar(100)
+  file_size     BigInt
+  uploaded_at   DateTime?   @default(now()) @db.Timestamp(6)
+  questions     questions[]
+}
+
+model participant_answers {
+  id             BigInt       @id @default(autoincrement())
+  participant_id BigInt
+  question_id    BigInt
+  answer_id      BigInt
+  answered_at    DateTime?    @default(now()) @db.Timestamp(6)
+  answers        answers      @relation(fields: [answer_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pa_answer")
+  participants   participants @relation(fields: [participant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pa_participant")
+  questions      questions    @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pa_question")
+
+  @@unique([participant_id, question_id, answer_id], map: "uq_participant_answer")
+  @@index([participant_id], map: "idx_participant_answers_participant")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model participants {
+  id                  BigInt                @id @default(autoincrement())
+  session_id          BigInt
+  user_id             BigInt
+  joined_at           DateTime?             @default(now()) @db.Timestamp(6)
+  score               Int?                  @default(0)
+  participant_answers participant_answers[]
+  quiz_sessions       quiz_sessions         @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_participant_session")
+  users               users                 @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_participant_user")
+  quiz_results        quiz_results[]
+
+  @@index([session_id], map: "idx_participants_session")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model questions {
+  id                  BigInt                @id @default(autoincrement())
+  quiz_id             BigInt
+  question_text       String
+  question_type       question_type
+  answer_type         answer_type
+  points              Int?                  @default(1)
+  question_order      Int
+  file_id             BigInt?
+  answers             answers[]
+  participant_answers participant_answers[]
+  files               files?                @relation(fields: [file_id], references: [id], onUpdate: NoAction, map: "fk_question_file")
+  quizzes             quizzes               @relation(fields: [quiz_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_question_quiz")
+
+  @@index([quiz_id], map: "idx_questions_quiz")
+}
+
+model quiz_results {
+  id              BigInt        @id @default(autoincrement())
+  quiz_id         BigInt
+  session_id      BigInt
+  participant_id  BigInt
+  total_score     Int           @default(0)
+  correct_answers Int           @default(0)
+  wrong_answers   Int           @default(0)
+  place           Int?
+  completed_at    DateTime?     @default(now()) @db.Timestamp(6)
+  participants    participants  @relation(fields: [participant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_result_participant")
+  quizzes         quizzes       @relation(fields: [quiz_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_result_quiz")
+  quiz_sessions   quiz_sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_result_session")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model quiz_sessions {
+  id                          BigInt         @id @default(autoincrement())
+  quiz_id                     BigInt
+  room_code                   String         @unique @db.VarChar(10)
+  started_at                  DateTime?      @db.Timestamp(6)
+  finished_at                 DateTime?      @db.Timestamp(6)
+  status                      String?        @default("waiting") @db.VarChar(20)
+  current_question_index      Int?
+  current_question_started_at DateTime?      @db.Timestamp(6)
+  participants                participants[]
+  quiz_results                quiz_results[]
+  quizzes                     quizzes        @relation(fields: [quiz_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_session_quiz")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model quizzes {
+  id            BigInt          @id @default(autoincrement())
+  organizer_id  BigInt
+  category_id   BigInt?
+  title         String          @db.VarChar(255)
+  description   String?
+  question_time Int             @default(30)
+  is_active     Boolean?        @default(true)
+  created_at    DateTime?       @default(now()) @db.Timestamp(6)
+  questions     questions[]
+  quiz_results  quiz_results[]
+  quiz_sessions quiz_sessions[]
+  categories    categories?     @relation(fields: [category_id], references: [id], onUpdate: NoAction, map: "fk_quiz_category")
+  users         users           @relation(fields: [organizer_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_quiz_organizer")
+
+  @@index([organizer_id], map: "idx_quizzes_organizer")
+}
+
+model users {
+  id            BigInt         @id @default(autoincrement())
+  username      String         @unique @db.VarChar(50)
+  email         String         @unique @db.VarChar(255)
+  password_hash String
+  role          user_role
+  created_at    DateTime?      @default(now()) @db.Timestamp(6)
+  participants  participants[]
+  quizzes       quizzes[]
+}
+
+enum answer_type {
+  single
+  multiple
+}
+
+enum question_type {
+  text
+  image
+}
+
+enum user_role {
+  participant
+  organizer
+}
