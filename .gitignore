@@ -17,8 +17,5 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Uploaded files
-server/src/uploads/
-
 # Temporary files
 *.tmp
