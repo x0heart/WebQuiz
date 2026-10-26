@@ -426,6 +426,9 @@ client/src/
 **GitHub:**  
 https://github.com/x0heart/WebQuiz
 
+**Макеты Miro**
+https://miro.com/app/board/uXjVEVOL9sA=/?share_link_id=735204474589
+
 ---
 
 # Лицензия
